@@ -29,7 +29,8 @@ func main() {
 			if err != nil {
 				fmt.Println(n, err.Error())
 			}
-			fmt.Println("Done")
+
 		}
 	}
+	fmt.Println(path, "Done")
 }
