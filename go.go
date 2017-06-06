@@ -18,12 +18,17 @@ func valid(path string) bool {
 func main() {
 	path := os.Args[1]
 	if valid(path) {
-		f, _ := os.Open(path)
-		defer f.Close()
-		b, _ := ioutil.ReadAll(f)
+		fr, _ := os.Open(path)
+		defer fr.Close()
+		b, _ := ioutil.ReadAll(fr)
 		if bytes.Contains(b, []byte{0xEF, 0xBB, 0xBF}) {
 			b = b[3:]
-			f.Write(b)
+			fw, _ := os.OpenFile(path, os.O_WRONLY|os.O_CREATE|os.O_TRUNC, 0666)
+			defer fw.Close()
+			n, err := fw.Write(b)
+			if err != nil {
+				fmt.Println(n, err.Error())
+			}
 			fmt.Println("Done")
 		}
 	}
